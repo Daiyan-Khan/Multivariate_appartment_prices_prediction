@@ -50,7 +50,7 @@ pipeline {
             steps {
                 script {
                     // Deploy your application (adjust this command according to your deployment method)
-                    bat "docker run -d -P 8080:8080 ${DOCKER_IMAGE}"
+                    bat "docker run -d -P ${DOCKER_IMAGE}"
                 }
             }
         }
