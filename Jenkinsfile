@@ -9,16 +9,16 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Checkout the code from your version control system
-                git url: 'https://github.com/Daiyan-Khan/Multivariate_appartment_prices_prediction.git', branch: 'main'
+                git url: 'https://github.com/Daiyan-Khan/jMultivariate_appartment_prices_prediction.git', branch: 'main'
                 echo "Code has been checked out from GitHub"
             }
         }
         stage('Install Dependencies') {
             steps {
                 // Install Python and necessary packages
-                sh '''
-                python3 -m venv venv
-                source venv/bin/activate
+                bat '''
+                python -m venv venv
+                venv\\Scripts\\activate.bat
                 pip install -r requirements.txt
                 '''
             }
@@ -27,26 +27,27 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image
-                    sh "docker build -t ${DOCKER_IMAGE} ."
+                    bat "docker build -t ${DOCKER_IMAGE} ."
                 }
             }
         }
+
         stage('Run Tests') {
             steps {
                 // Run your pytest tests
-                sh '''
-                source venv/bin/activate
+                bat '''
+                venv\\Scripts\\activate.bat
                 pytest test_multivariate_linear_reg.py
                 '''
             }
         }
+
         stage('Deploy') {
             steps {
                 script {
                     // Deploy the application (adjust this command according to your deployment method)
-                    // Uncomment and modify the line below to deploy your Docker container
-                    // sh "docker run -d -p 8080:8080 ${DOCKER_IMAGE}"
-                    echo "Deploying application (uncomment and modify the above line to deploy your Docker container)"
+                    // Example: bat 'docker run -d -p 8080:8080 ${DOCKER_IMAGE}'
+                    // Uncomment and modify the above line to deploy your Docker container
                 }
             }
         }
@@ -55,15 +56,7 @@ pipeline {
     post {
         always {
             // Clean up any Docker images (optional)
-            script {
-                sh "docker rmi ${DOCKER_IMAGE} || true"
-            }
-        }
-        success {
-            echo 'Pipeline succeeded!'
-        }
-        failure {
-            echo 'Pipeline failed.'
+            bat "docker rmi ${DOCKER_IMAGE} || exit 0"
         }
     }
 }
