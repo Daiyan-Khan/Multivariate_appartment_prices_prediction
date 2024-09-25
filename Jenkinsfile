@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'multivariate_appartment_prices_prediction-server' // Change this to your desired Docker image name
+        PYTHON_ENV = "venv"  // Define the Python environment
     }
 
     stages {
