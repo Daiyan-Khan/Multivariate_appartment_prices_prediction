@@ -19,7 +19,7 @@ pipeline {
             steps {
                 // Create a virtual environment
                 bat 'python -m venv %PYTHON_ENV%'  // Use 'bat' for Windows commands
-                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat && pip install pandas numpy==1.26.3 pytest'  // Correct activation for Windows
+                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat && pip install pandas numpy==1.26.3 pytest flake8'  // Correct activation for Windows
             }
         }
 
@@ -36,7 +36,11 @@ pipeline {
                 bat 'call %PYTHON_ENV%\\Scripts\\activate.bat && python test.py'  // Example using pytest
             }
         }
-
+        stage("Code Q/A"){
+              steps{
+                 bat "jupyter nbconvert --to script your_notebook.ipynb"
+              }
+              }
         stage('Build Docker Image') {
             steps {
                 script {
