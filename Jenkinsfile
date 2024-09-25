@@ -42,11 +42,4 @@ pipeline {
         }
 
     }
-
-    post {
-        always {
-            // Clean up any Docker images (optional)
-            bat "docker rmi ${DOCKER_IMAGE} || exit 0"
-        }
-    }
 }
