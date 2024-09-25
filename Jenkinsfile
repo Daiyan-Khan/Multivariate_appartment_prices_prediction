@@ -19,7 +19,7 @@ pipeline {
             steps {
                 // Create a virtual environment
                 bat 'python -m venv %PYTHON_ENV%'  // Use 'bat' for Windows commands
-                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat'  // Correct activation for Windows
+                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat pip install numpy pandas pytest'  // Correct activation for Windows
             }
         }
 
@@ -33,7 +33,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 // Run your tests (add your test command here)
-                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat && pytest test.py'  // Example using pytest
+                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat && python test.py'  // Example using pytest
             }
         }
 
