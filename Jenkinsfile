@@ -26,7 +26,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 // Install required dependencies
-                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat && python.exe -m pip install --upgrade pip && pip install -r requirements.txt'
+                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat && python.exe -m pip install --upgrade pip && pip cache purge && pip install -r requirements.txt'
             }
         }
 
