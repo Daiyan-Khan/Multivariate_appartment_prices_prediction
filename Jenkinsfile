@@ -33,7 +33,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 // Run your tests (add your test command here)
-                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat && pytest test_multivariate_linear_reg.py'  // Example using pytest
+                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat && pytest test.py'  // Example using pytest
             }
         }
 
