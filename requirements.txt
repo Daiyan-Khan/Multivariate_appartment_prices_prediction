@@ -1,5 +1,5 @@
-pandas
-numpy
+pandas==2.7
+numpy==1.6
 matplotlib==3.7.1
 scikit-learn
 pytest
