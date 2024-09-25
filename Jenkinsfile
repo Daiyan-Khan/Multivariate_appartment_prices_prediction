@@ -38,7 +38,7 @@ pipeline {
         }
         stage("Code Q/A"){
               steps{
-                 bat "%PYTHON_ENV%\\Scripts\\jupyter nbconvert --to script your_notebook.ipynb"
+                 bat "%PYTHON_ENV%\\Scripts\\jupyter nbconvert --to script multivate_linear_reg.ipynb"
               }
               }
         stage('Build Docker Image') {
