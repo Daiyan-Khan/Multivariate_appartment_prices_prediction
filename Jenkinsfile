@@ -19,7 +19,7 @@ pipeline {
             steps {
                 // Create a virtual environment
                 bat 'python -m venv %PYTHON_ENV%'  // Use 'bat' for Windows commands
-                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat pip install numpy==1.26.4 pandas pytest --force-reinstall'  // Correct activation for Windows
+                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat && pip install numpy==1.26.4 pandas pytest --force-reinstall'  // Correct activation for Windows
             }
         }
 
