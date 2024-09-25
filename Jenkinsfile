@@ -13,7 +13,16 @@ pipeline {
                 echo "Code has been checked out from GitHub"
             }
         }
-
+        stage('Install Dependencies') {
+            steps {
+                // Install Python and necessary packages
+                sh '''
+                python3 -m venv venv
+                source venv/bin/activate
+                pip install -r requirements.txt
+                '''
+            }
+        }
         stage('Build Docker Image') {
             steps {
                 script {
@@ -25,11 +34,11 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                script {
-                    // Run tests (add your test command here)
-                    // Example: sh 'docker run --rm ${DOCKER_IMAGE} python -m unittest discover -s tests'
-                    // Uncomment and modify the above line according to your test framework
-                }
+                // Run your pytest tests
+                sh '''
+                source venv/bin/activate
+                pytest test_multivariate_linear_reg.py
+                '''
             }
         }
 
