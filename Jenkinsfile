@@ -42,15 +42,6 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            steps {
-                script {
-                    // Deploy the application (adjust this command according to your deployment method)
-                    // Example: bat 'docker run -d -p 8080:8080 ${DOCKER_IMAGE}'
-                    // Uncomment and modify the above line to deploy your Docker container
-                }
-            }
-        }
     }
 
     post {
