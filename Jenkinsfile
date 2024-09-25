@@ -9,7 +9,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Checkout the code from your version control system
-                git url: 'https://github.com/Daiyan-Khan/jMultivariate_appartment_prices_prediction.git', branch: 'main'
+                git url: 'https://github.com/Daiyan-Khan/Multivariate_appartment_prices_prediction.git', branch: 'main'
                 echo "Code has been checked out from GitHub"
             }
         }
