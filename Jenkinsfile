@@ -9,7 +9,7 @@ pipeline {
         DEPLOYMENT_GROUP = 'JenkinsHD'  // Your CodeDeploy deployment group
         APPLICATION_NAME = 'AppartmentPPredictionrice'  // Your CodeDeploy application name
         AWS_ACCESS_KEY_ID = 'AKIAXEFUNVV6TPLYLQMW'  // AWS credentials from Jenkins
-        AWS_SECRET_ACCESS_KEY ='CliINtqAD6I6AVJFCELDXa0jefAH8PPddu9zJ9Zt'
+        AWS_SECRET_ACCESS_KEY = 'CliINtqAD6I6AVJFCELDXa0jefAH8PPddu9zJ9Zt'
     }
 
     stages {
@@ -66,8 +66,8 @@ pipeline {
                 }
             }
         }
-        
- stage('Package for CodeDeploy') {
+
+        stage('Package for CodeDeploy') {
             steps {
                 script {
                     // Create the deployment archive and upload it to S3
@@ -87,6 +87,7 @@ pipeline {
                     """
                 }
             }
+        }
     }
 
     post {
