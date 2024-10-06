@@ -3,9 +3,7 @@ pipeline {
 
     environment {
         PYTHON_ENV = "venv"  // Define the Python environment
-        DOCKER_IMAGE = 'multivariate_appartment_prices_prediction-server' // Docker image name
-        GITHUB_TOKEN = credentials('Daiyan-Khan')  // GitHub Personal Access Token stored in Jenkins credentials
-        GITHUB_REPO = "Daiyan-Khan/Multivariate_appartment_prices_prediction"  // GitHub repo details
+        DOCKER_IMAGE = 'multivariate_appartment_prices_prediction-server' // Docker image 
     }
 
     stages {
@@ -63,37 +61,6 @@ pipeline {
             }
         }
 
-        // New stage to trigger a release on GitHub
-        stage('Release') {
-            steps {
-                script {
-                    // Generate the tag dynamically or use a fixed version
-                    def releaseTag = "v1.0.${env.BUILD_NUMBER}"  // e.g., v1.0.1 for first build, v1.0.2 for second
-
-                    // Create a new release on GitHub using the API
-                    def response = sh(script: """
-                        curl -X POST \
-                        -H "Authorization: token ${GITHUB_TOKEN}" \
-                        -H "Content-Type: application/json" \
-                        -d '{
-                              "tag_name": "${releaseTag}",
-                              "target_commitish": "main",
-                              "name": "${releaseTag}",
-                              "body": "Release created by Jenkins Pipeline",
-                              "draft": false,
-                              "prerelease": false
-                            }' \
-                        https://api.github.com/repos/${GITHUB_REPO}/releases
-                    """, returnStdout: true).trim()
-
-                    echo "GitHub Release Response: ${response}"
-
-                    // Optionally, print the release URL for reference
-                    def releaseUrl = readJSON(text: response).html_url
-                    echo "Release created: ${releaseUrl}"
-                }
-            }
-        }
     }
 
     post {
