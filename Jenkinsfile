@@ -70,22 +70,25 @@ pipeline {
        stage('Package for CodeDeploy') {
     steps {
         script {
-            // Create the deployment archive and upload it to S3
+            // Check if the deploy directory exists, and create it if it doesn't
             bat """
-            mkdir deploy
-            echo "version: 0.0" > deploy/appspec.yml
-            echo "os: linux" >> deploy/appspec.yml
-            echo "files:" >> deploy/appspec.yml
-            echo "  - source: /" >> deploy/appspec.yml
-            echo "    destination: /var/www/html" >> deploy/appspec.yml
-            
-            // Change to the appropriate directory if needed
+            IF NOT EXIST deploy (
+                mkdir deploy
+            )
             cd deploy
+
+            // Create the appspec.yml file if it doesn't exist
+            echo "version: 0.0" > appspec.yml
+            echo "os: linux" >> appspec.yml
+            echo "files:" >> appspec.yml
+            echo "  - source: /" >> appspec.yml
+            echo "    destination: /var/www/html" >> appspec.yml
             
             // Package files
             tar -czvf deployment-package.tar.gz *   // Package files
             cd ..
-            
+
+            // Upload to S3
             aws s3 cp deploy/deployment-package.tar.gz s3://${S3_BUCKET}/deployment-package-${env.BUILD_NUMBER}.tar.gz \
                 --region ${AWS_REGION} \
                 --access-key ${AWS_ACCESS_KEY_ID} \
@@ -94,6 +97,7 @@ pipeline {
         }
     }
 }
+
 
     }
 
