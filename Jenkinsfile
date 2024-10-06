@@ -67,27 +67,34 @@ pipeline {
             }
         }
 
-        stage('Package for CodeDeploy') {
-            steps {
-                script {
-                    // Create the deployment archive and upload it to S3
-                    bat """
-                    mkdir deploy
-                    echo "version: 0.0" > deploy/appspec.yml
-                    echo "os: linux" >> deploy/appspec.yml
-                    echo "files:" >> deploy/appspec.yml
-                    echo "  - source: /" >> deploy/appspec.yml
-                    echo "    destination: /var/www/html" >> deploy/appspec.yml
-                    tar -czvf deploy/deployment-package.tar.gz *   // Package files
-
-                    aws s3 cp deploy/deployment-package.tar.gz s3://${S3_BUCKET}/deployment-package-${env.BUILD_NUMBER}.tar.gz \
-                        --region ${AWS_REGION} \
-                        --access-key ${AWS_ACCESS_KEY_ID} \
-                        --secret-key ${AWS_SECRET_ACCESS_KEY}
-                    """
-                }
-            }
+       stage('Package for CodeDeploy') {
+    steps {
+        script {
+            // Create the deployment archive and upload it to S3
+            bat """
+            mkdir deploy
+            echo "version: 0.0" > deploy/appspec.yml
+            echo "os: linux" >> deploy/appspec.yml
+            echo "files:" >> deploy/appspec.yml
+            echo "  - source: /" >> deploy/appspec.yml
+            echo "    destination: /var/www/html" >> deploy/appspec.yml
+            
+            // Change to the appropriate directory if needed
+            cd deploy
+            
+            // Package files
+            tar -czvf deployment-package.tar.gz *   // Package files
+            cd ..
+            
+            aws s3 cp deploy/deployment-package.tar.gz s3://${S3_BUCKET}/deployment-package-${env.BUILD_NUMBER}.tar.gz \
+                --region ${AWS_REGION} \
+                --access-key ${AWS_ACCESS_KEY_ID} \
+                --secret-key ${AWS_SECRET_ACCESS_KEY}
+            """
         }
+    }
+}
+
     }
 
     post {
