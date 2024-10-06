@@ -4,6 +4,8 @@ pipeline {
     environment {
         PYTHON_ENV = "venv"  // Define the Python environment
         DOCKER_IMAGE = 'multivariate_appartment_prices_prediction-server' // Docker image name
+        GITHUB_TOKEN = credentials('github-token')  // GitHub Personal Access Token stored in Jenkins credentials
+        GITHUB_REPO = "Daiyan-Khan/Multivariate_appartment_prices_prediction"  // GitHub repo details
     }
 
     stages {
@@ -36,11 +38,13 @@ pipeline {
                 bat 'call %PYTHON_ENV%\\Scripts\\activate.bat && python test.py'  // Example using pytest
             }
         }
-        stage("Code Q/A"){
-              steps{
-                 bat "%PYTHON_ENV%\\Scripts\\jupyter nbconvert --to script multivate_linear_reg.ipynb"
-              }
-              }
+
+        stage("Code Q/A") {
+            steps {
+                bat "%PYTHON_ENV%\\Scripts\\jupyter nbconvert --to script multivate_linear_reg.ipynb"
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 script {
@@ -58,6 +62,8 @@ pipeline {
                 }
             }
         }
+
+        // New stage to trigger a release on GitHub
         stage('Release') {
             steps {
                 script {
@@ -87,9 +93,8 @@ pipeline {
                     echo "Release created: ${releaseUrl}"
                 }
             }
+        }
     }
-     // New stage to trigger a release on GitHub
-        
 
     post {
         success {
