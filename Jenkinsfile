@@ -104,7 +104,5 @@ pipeline {
         failure {
             echo 'Build or Tests failed!'
         }
-       
     }
-    
 }
