@@ -4,7 +4,7 @@ pipeline {
     environment {
         PYTHON_ENV = "venv"  // Define the Python environment
         DOCKER_IMAGE = 'multivariate_appartment_prices_prediction-server' // Docker image name
-        GITHUB_TOKEN = credentials('github-token')  // GitHub Personal Access Token stored in Jenkins credentials
+        GITHUB_TOKEN = credentials('Daiyan-Khan')  // GitHub Personal Access Token stored in Jenkins credentials
         GITHUB_REPO = "Daiyan-Khan/Multivariate_appartment_prices_prediction"  // GitHub repo details
     }
 
