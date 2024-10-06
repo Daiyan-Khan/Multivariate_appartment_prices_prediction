@@ -118,6 +118,6 @@ pipeline {
         bat "docker rmi ${DOCKER_IMAGE} || exit 0"
     }
 }
-
+    }
     
 }
