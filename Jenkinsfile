@@ -85,7 +85,6 @@ pipeline {
             echo     destination: /var/www/html >> appspec.yml
             
             REM Package files
-            tar -czvf deployment-package.tar.gz *   REM Package files
             cd ..
 
             REM Upload to S3
