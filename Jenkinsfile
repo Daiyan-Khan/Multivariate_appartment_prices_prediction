@@ -5,7 +5,7 @@ pipeline {
         PYTHON_ENV = "venv"  // Define the Python environment
         DOCKER_IMAGE = 'multivariate_appartment_prices_prediction-server' // Docker image 
         AWS_REGION = 'us-west-2'  // Set your AWS region
-        S3_BUCKET = 'my-bucket'  // S3 bucket for storing the deployment archive
+        S3_BUCKET = 'daiyans-bucket'  // S3 bucket for storing the deployment archive
         DEPLOYMENT_GROUP = 'JenkinsHD'  // Your CodeDeploy deployment group
         APPLICATION_NAME = 'AppartmentPPredictionrice'  // Your CodeDeploy application name
     }
