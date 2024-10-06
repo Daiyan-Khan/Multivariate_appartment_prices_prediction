@@ -4,6 +4,12 @@ pipeline {
     environment {
         PYTHON_ENV = "venv"  // Define the Python environment
         DOCKER_IMAGE = 'multivariate_appartment_prices_prediction-server' // Docker image 
+        AWS_REGION = 'us-west-2'  // Set your AWS region
+        S3_BUCKET = 'my-bucket'  // S3 bucket for storing the deployment archive
+        DEPLOYMENT_GROUP = 'JenkinsHD'  // Your CodeDeploy deployment group
+        APPLICATION_NAME = 'AppartmentPPredictionrice'  // Your CodeDeploy application name
+        AWS_ACCESS_KEY_ID = 'AKIAXEFUNVV6TPLYLQMW'  // AWS credentials from Jenkins
+        AWS_SECRET_ACCESS_KEY = 'CliINtqAD6I6AVJFCELDXa0jefAH8PPddu9zJ9Zt'
     }
 
     stages {
@@ -25,8 +31,8 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                // Install required dependencies
-                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat'
+                // Activate the virtual environment to install required dependencies
+                bat 'call %PYTHON_ENV%\\Scripts\\activate.bat && pip install -r requirements.txt'
             }
         }
 
@@ -60,7 +66,28 @@ pipeline {
                 }
             }
         }
+        
+        stage('Package for CodeDeploy') {
+            steps {
+                script {
+                    // Create the deployment archive and upload it to S3
+                    bat """
+                    mkdir deploy
+                    echo "version: 0.0" > deploy/appspec.yml
+                    echo "os: linux" >> deploy/appspec.yml
+                    echo "files:" >> deploy/appspec.yml
+                    echo "  - source: /" >> deploy/appspec.yml
+                    echo "    destination: /var/www/html" >> deploy/appspec.yml
+                    tar -czvf deploy/deployment-package.tar.gz *   // Package files
 
+                    aws s3 cp deploy/deployment-package.tar.gz s3://${S3_BUCKET}/deployment-package-${env.BUILD_NUMBER}.tar.gz \
+                        --region ${AWS_REGION} \
+                        --access-key ${AWS_ACCESS_KEY_ID} \
+                        --secret-key ${AWS_SECRET_ACCESS_KEY}
+                    """
+                }
+            }
+        }
     }
 
     post {
