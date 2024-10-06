@@ -88,7 +88,7 @@ pipeline {
             cd ..
 
             REM Upload to S3
-            C:\Program Files\Amazon\AWSCLIV2\ aws s3 cp deploy/deployment-package.tar.gz s3://${S3_BUCKET}/deployment-package-${env.BUILD_NUMBER}.tar.gz ^
+           "C:\\Program Files\\Amazon\\AWSCLIV2\\aws" aws s3 cp deploy/deployment-package.tar.gz s3://${S3_BUCKET}/deployment-package-${env.BUILD_NUMBER}.tar.gz ^
                 --region ${AWS_REGION} ^
                 --access-key ${AWS_ACCESS_KEY_ID} ^
                 --secret-key ${AWS_SECRET_ACCESS_KEY}
