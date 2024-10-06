@@ -105,19 +105,19 @@ pipeline {
             echo 'Build or Tests failed!'
         }
         always {
-            // Cleanup actions if needed
-            echo 'Cleaning up...'
-            script {
-                // Stop and remove any running containers using the image
-                bat '''
-                FOR /F "tokens=*" %%i IN ('docker ps -q --filter "ancestor=%DOCKER_IMAGE%"') DO (
-                    docker stop %%i
-                    docker rm %%i
-                )
-                '''
-                // Clean up any Docker images
-                bat "docker rmi ${DOCKER_IMAGE} || exit 0"
-            }
-        }
+    echo 'Cleaning up...'
+    script {
+        // Stop and remove any running containers using the image
+        bat '''
+        FOR /F "tokens=*" %%i IN ('docker ps -q --filter "ancestor=%DOCKER_IMAGE%"') DO (
+            docker stop %%i || exit 0
+            docker rm %%i || exit 0
+        )
+        '''
+        // Clean up any Docker images
+        bat "docker rmi ${DOCKER_IMAGE} || exit 0"
     }
+}
+
+    
 }
