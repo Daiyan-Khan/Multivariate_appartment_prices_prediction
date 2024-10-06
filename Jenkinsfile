@@ -77,26 +77,27 @@ pipeline {
             )
             cd deploy
 
-            // Create the appspec.yml file if it doesn't exist
-            echo "version: 0.0" > appspec.yml
-            echo "os: linux" >> appspec.yml
-            echo "files:" >> appspec.yml
-            echo "  - source: /" >> appspec.yml
-            echo "    destination: /var/www/html" >> appspec.yml
+            REM Create the appspec.yml file
+            echo version: 0.0 > appspec.yml
+            echo os: linux >> appspec.yml
+            echo files: >> appspec.yml
+            echo   - source: / >> appspec.yml
+            echo     destination: /var/www/html >> appspec.yml
             
-            // Package files
-            tar -czvf deployment-package.tar.gz *   // Package files
+            REM Package files
+            tar -czvf deployment-package.tar.gz *   REM Package files
             cd ..
 
-            // Upload to S3
-            aws s3 cp deploy/deployment-package.tar.gz s3://${S3_BUCKET}/deployment-package-${env.BUILD_NUMBER}.tar.gz \
-                --region ${AWS_REGION} \
-                --access-key ${AWS_ACCESS_KEY_ID} \
+            REM Upload to S3
+            aws s3 cp deploy/deployment-package.tar.gz s3://${S3_BUCKET}/deployment-package-${env.BUILD_NUMBER}.tar.gz ^
+                --region ${AWS_REGION} ^
+                --access-key ${AWS_ACCESS_KEY_ID} ^
                 --secret-key ${AWS_SECRET_ACCESS_KEY}
             """
         }
     }
 }
+
 
 
     }
